@@ -99,7 +99,7 @@ $SafeParser = new SafeParser;
 $SafeParser->setSearchSymbol('!'); // it shouldALWAYS be before setEnabler
 $SafeParser->setEnabler("[!}}"); //I know it's awful styled, but it's brilliant for example
 $SafeParser->setCustomElement("ownElement", "<p style='background-color: red'><a class='someClass' id='someId'>");
-echo $SafeParser->parse("[p}} This is paragraph [/p}}");
+echo $SafeParser->parse("[ownElement}} This is paragraph [/ownElement}}");
 /*
 Will print:
 <p style='background-color: red'><a class='someClass' id='someId'> This is my own element </a></p>
