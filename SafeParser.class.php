@@ -36,7 +36,7 @@
             $val = substr($val, 0, $begin);
       }
       //close tags and return
-        return preg_replace("/<(\w+) ?[\w =\"\'\.]*>/", "</$1>", $final);
+        return preg_replace("/<(\w+) ?[\w =\"\'\.:\-_]*>/", "</$1>", $final);
     }
 
     public function setText(string $text) {
@@ -124,4 +124,10 @@
     }
 
   }
+
+  $SafeParser = new SafeParser;
+  $SafeParser->setSearchSymbol('!'); // it shouldALWAYS be before setEnabler
+  $SafeParser->setEnabler("[!}}"); //I know it's awful styled, but it's brilliant for example
+  $SafeParser->setCustomElement("ownElement", "<p style='background-color: red'><a class='someClass' id='someId'>");
+  echo $SafeParser->parse("[ownElement}} This is my own element [/ownElement}}");
 ?>

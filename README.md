@@ -88,7 +88,21 @@ echo $SafeParser->parse("[p}} This is paragraph [/p}}");
 ### Own Elements
 SafeParser allows you to create own elements. For example: you can make it to replace ```[ownElement]``` tag with ```<p style="background-color: red"><input class="some-class" disabled>``` tags.<br><br>
 To do that:
-1. Define element with ```setCustomElement(string $tagName, string $tagSequence)```. Example: ```setCustomElement(ownElement, "<p style="background-color: red"><input class="some-class" disabled>")```
+1. Define element with ```setCustomElement(string $tagName, string $tagSequence)```. Example: ```setCustomElement("ownElement", "<p style='background-color: red'><a class='someClass' id='someId'>")```
 2. Use it as a tag! (Remember to close your tag).
 
 SafeParser will automatically add slashes and order your closing tags!
+Final result:
+```PHP
+<?php
+$SafeParser = new SafeParser;
+$SafeParser->setSearchSymbol('!'); // it shouldALWAYS be before setEnabler
+$SafeParser->setEnabler("[!}}"); //I know it's awful styled, but it's brilliant for example
+$SafeParser->setCustomElement("ownElement", "<p style='background-color: red'><a class='someClass' id='someId'>");
+echo $SafeParser->parse("[p}} This is paragraph [/p}}");
+/*
+Will print:
+<p style='background-color: red'><a class='someClass' id='someId'> This is my own element </a></p>
+*/
+?>
+```
