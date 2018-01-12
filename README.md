@@ -47,7 +47,7 @@ __NOTE__: Enabled tags can always be changed. They are on the top of the SafePar
 
 ### Functions
 |Name|Return type|Description|
-|-|-|-|-|
+|-|-|-|
 |setText(string $text)|-|Sets text|
 |setSearchSymbol(string $symbol)|-|Sets SearchSymbol|
 |setEnabler(string $format)|-|Sets enabler|
