@@ -88,10 +88,6 @@
 
     # Protected functions
 
-    protected function print_r($array) {
-      print("<pre>".htmlentities(print_r($array,true), ENT_QUOTES)."</pre>");
-    }
-
     protected function searchByKeys(string $arrayName, string $arrayKey) {
       return isset($this->$arrayName[$arrayKey]);
     }
@@ -171,7 +167,7 @@
 
     }
 
-    protected function incr_lookFor(array &$lookFor, $val) {
+    protected function incr_lookFor(array &$lookFor, int $val) {
       $lookFor[1][0]['start'] += $val;
       $lookFor[1][0]['end'] += $val;
       $lookFor[1][1]['start'] += $val;
@@ -234,7 +230,7 @@
       }
     }
 
-    protected function autoclose($text) {
+    protected function autoclose(string $text) {
         // set final
           $final= "";
         //reverse tags
@@ -257,7 +253,7 @@
 
 
 
-    public function getAttributes(String $text) {
+    public function getAttributes(string $text) {
       $final = "";
       $settings = $this->settings;
 
@@ -317,7 +313,7 @@
       return $this->settings[$settingName];
     }
 
-    public function parse($text) {
+    public function parse(string $text) {
       //set variables
         $final = "";
         $attrDelimiters = $this->settings['delimiters']['attributes'];
@@ -340,28 +336,35 @@
                 $tmp = substr($text, 0, $tag[1][0]['start']);
                 $final.=htmlspecialchars($tmp, ENT_QUOTES, "UTF-8");
 
-                if(substr($tag[1][1]['value'], 0, 1) != "/") {
 
-                  $this->preg_match(
+                if(substr($tag[1][1]['value'], 0, 1) == "/") $attr = "";
+                else { //if not a closing tag
+
+                  $startFound = $this->preg_match(
                     "/".preg_quote($attrDelimiters[0], "/")."/",
                     $text,
                     $attrStart,
                      $tag[1][0]['end']-1
                   );
 
-                  $this->preg_match(
+                  $endFound = $this->preg_match(
                     "/".preg_quote($attrDelimiters[1], "/")."/",
                     $text,
                     $attrEnd,
-                     $tag[1][0]['end']
+                     $tag[1][0]['end'] -1
                   );
 
-                  $endPos = $attrEnd[0]['end'];
+                  if(
+                    $startFound > 0
+                    && $endFound > 0
+                    && $attrStart[0]['start'] == $endPos)  {
 
-                  $attr = substr($text, $attrStart[0]['end'], $attrEnd[0]['start'] - $attrStart[0]['end']);
-                  $attr = $this->getAttributes($attr);
+                      $endPos = $attrEnd[0]['end'];
+                      $attr = substr($text, $attrStart[0]['end'], $attrEnd[0]['start'] - $attrStart[0]['end']);
+                      $attr = $this->getAttributes($attr);
+
+                  } else $attr = "";
                 }
-                else $attr = "";
 
                 $final.="<".$tag[1][1]['value']." ".$attr.">";
               }

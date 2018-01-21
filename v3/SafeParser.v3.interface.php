@@ -13,7 +13,7 @@
 
     //public function verifySecurity($text);
     //public function check($text);
-    public function parse($text);
+    public function parse(string $text);
 
   }
 
