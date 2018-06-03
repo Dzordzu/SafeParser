@@ -1,4 +1,7 @@
-# SafeParser HTML
+# XSS-Tool HTML
+
+## WARNING
+Development of this (useless) tool was terminated in order to learn TWIG. 
 
 ## Supported languages:
 * PHP
